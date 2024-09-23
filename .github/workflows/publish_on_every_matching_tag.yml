@@ -6,13 +6,10 @@ on:
     tags:
       - '*'
 
-strategy:
-  matrix:
-    os: [ubuntu-latest]
-  fail-fast: true
-
 jobs:
   tagged-release:
+    strategy:
+      fail-fast: true
     name: "Tagged Release"
     runs-on: "ubuntu-latest"
  
