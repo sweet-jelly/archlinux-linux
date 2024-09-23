@@ -4,7 +4,12 @@ name: "tagged-release"
 on:
   push:
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]+-arch[0-9]*"
+      - '*'
+
+strategy:
+  matrix:
+    os: [ubuntu-latest]
+  fail-fast: true
 
 jobs:
   tagged-release:
@@ -12,6 +17,8 @@ jobs:
     runs-on: "ubuntu-latest"
  
     steps:
+      - name: Check tag
+        run: [[ echo "$GITHUB_REF_NAME" | grep -Pq '^[0-9]+\.[0-9]+.[0-9]+-arch[0-9]*$' ]] || exit 1
       - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
