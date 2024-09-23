@@ -1,0 +1,40 @@
+---
+name: "manually-trigger-release"
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Test scenario tags'
+        required: false
+        type: string
+
+jobs:
+  tagged-release:
+    name: "Tagged Release"
+    runs-on: "ubuntu-latest"
+ 
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+          ref: $GITHUB_REF_NAME
+          
+      - name: Pack archive
+        run: |
+          tar -caf archlinux-linux-$GITHUB_REF_NAME.tar.gz *
+          sha512sum archlinux-linux-$GITHUB_REF_NAME.tar.gz.sha512
+          
+      - name: "Release"
+        run: |
+          echo "done!"
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            archlinux-linux-$GITHUB_REF_NAME.tar.gz
+            archlinux-linux-$GITHUB_REF_NAME.tar.gz.sha512
+
+            
