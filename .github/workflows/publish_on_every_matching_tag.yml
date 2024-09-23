@@ -19,8 +19,8 @@ jobs:
           
       - name: Pack archive
         run: |
-          tar -caf archlinux-linux-$GITHUB_REF_NAME.tar.gz *
-          sha512sum archlinux-linux-$GITHUB_REF_NAME.tar.gz.sha512
+          tar -cafv archlinux-linux-$GITHUB_REF_NAME.tar.gz --exclude=.git/ *
+          sha512sum archlinux-linux-$GITHUB_REF_NAME.tar.gz > archlinux-linux-$GITHUB_REF_NAME.tar.gz.sha512
           
       - name: "Release"
         run: |
